@@ -1,26 +1,74 @@
+var Case = require('../db/models/case.js');
 var List = require('../db/models/list');
 var jwt = require('jsonwebtoken');
 const { json } = require('body-parser');
 var secret = 'secret';
+var mongoose = require('mongoose');
 
 module.exports = (router) => {
-  router.get('/home', (req, res) => {
-    List.find().then((list) => {
-      res.json({
-        list: list,
-        msg: 'Success',
-      });
-    });
+  // router.get('/cases', (req, res) => {
+  //   Case.find()
+  //     .then((case_list) => {
+  //       res.json({
+  //         case_list: case_list,
+  //         msg: 'Success',
+  //       });
+  //     })
+  //     .catch((error) => console.log(error));
+  // });
+
+  router.get('/cases/query=:query/', (req, res) => {
+    var query = req.params.query;
+    const page = req.query.page;
+    const limit = req.query.limit;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    Case.find({ $text: { $search: query } })
+      .select({ title: 1, judgement: 1, _id: 1 })
+      .lean()
+      .sort()
+      .then((case_list) => {
+        const resultCases = case_list.slice(startIndex, endIndex);
+        res.json({
+          case_list: resultCases,
+          result_count: case_list.length,
+          msg: 'Success',
+        });
+      })
+      .catch((error) => console.log(error));
   });
 
-  router.post('/home', (req, res) => {
-    var list = new List();
-    list.idx = req.body.idx;
-    list.name = req.body.name;
-    list.age = req.body.age;
-    list.gender = req.body.gender;
-    list.country = req.body.country;
-    list.save((error) => {
+  router.get('/cases/_id=:object_id', (req, res) => {
+    Case.find({ _id: mongoose.Types.ObjectId(req.params.object_id) })
+      .then((case_item) => {
+        res.json({
+          case_list: case_item,
+          msg: 'Success',
+        });
+      })
+      .catch((error) => console.log(error));
+  });
+
+  router.post('/cases', (req, res) => {
+    var case_item = new Case();
+    case_item.url = req.body.url;
+    case_item.source = req.body.source;
+    case_item.petitioner = req.body.petitioner;
+    case_item.respondent = req.body.respondent;
+    case_item.date = req.body.date;
+    case_item.month = req.body.month;
+    case_item.year = req.body.year;
+    case_item.doc_author = req.body.doc_author;
+    case_item.bench = req.body.bench;
+    case_item.judgement = req.body.judgement;
+    case_item.judgement_text = req.body.judgement_text;
+    case_item.title = req.body.title;
+    case_item.petitioner_counsel = req.body.petitioner_counsel;
+    case_item.respondent_counsel = req.body.respondent_counsel;
+    case_item.provisions_referred = req.body.provisions_referred;
+    case_item.cases_referred = req.body.cases_referred;
+    case_item.save((error) => {
       if (error) {
         res.json({
           success: false,
@@ -29,20 +77,20 @@ module.exports = (router) => {
       } else {
         res.json({
           success: false,
-          list: list,
-          msg: 'List created',
+          case_item: case_item,
+          msg: 'Case created',
         });
       }
     });
   });
 
-  router.delete('/home', (req, res) => {
-    List.deleteOne({
-      _id: req.body._id,
+  router.delete('/SCdata01', (req, res) => {
+    Case.deleteOne({
+      url: req.body.url,
     })
       .then(() => {
-        List.find().then((list) => {
-          res.send(list);
+        Case.find().then((case_list) => {
+          res.send(case_list);
         });
       })
       .catch((error) => {

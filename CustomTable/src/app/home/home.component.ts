@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import List from '../models/list';
+import List from '../models/case';
 import { HomeService } from '../home/home.service';
 
 @Component({
@@ -11,25 +11,25 @@ export class HomeComponent implements OnInit {
   rows: List[] = [];
   headers = ['idx', 'name', 'age', 'gender', 'country'];
 
-  loadScripts() {
-    const dynamicScripts = ['../../assets/scripts/search.js'];
-    for (let i = 0; i < dynamicScripts.length; i++) {
-      const node = document.createElement('script');
-      node.src = dynamicScripts[i];
-      node.type = 'text/javascript';
-      node.async = false;
-      node.charset = 'utf-8';
-      document.getElementsByTagName('head')[0].appendChild(node);
-    }
-  }
+  // loadScripts() {
+  //   const dynamicScripts = ['../../assets/scripts/search.js'];
+  //   for (let i = 0; i < dynamicScripts.length; i++) {
+  //     const node = document.createElement('script');
+  //     node.src = dynamicScripts[i];
+  //     node.type = 'text/javascript';
+  //     node.async = false;
+  //     node.charset = 'utf-8';
+  //     document.getElementsByTagName('head')[0].appendChild(node);
+  //   }
+  // }
 
   constructor(private homeService: HomeService) {
-    this.loadScripts();
+    // this.loadScripts();
   }
 
   ngOnInit(): void {
     this.homeService
-      .getLists()
+      .getCases()
       .subscribe((data: any) => (this.rows = data.list));
   }
 }
