@@ -1,0 +1,50 @@
+<body ng-init="rows">
+  <div class="search-bar">
+    <input
+      type="text"
+      id="myInput"
+      placeholder="Query Anything"
+      [(ngModel)]="query"
+    />
+
+    <!-- <button id="object_id" (click)="search_by_object_id()">Search</button> -->
+    <button id="object_id" (click)="first_search()">Search</button>
+  </div>
+  <br />
+  <br />
+
+  <ul class="search-repeater" *ngFor="let data of rows">
+    <li>
+      <h3 id="search-title" name="title">{{ data.url }}</h3>
+    </li>
+    <li>
+      <h3 id="search-category" name="category">{{ data.source }}</h3>
+    </li>
+    <li>
+      <h4 id="search-desc" name="desc">{{ data.title }}</h4>
+    </li>
+    <li>
+      <ul class="search-bottom">
+        <li>
+          <h4 class="bottom-option" name="age">{{ data.petitioner }}</h4>
+        </li>
+        <li>
+          <h4 class="bottom-option" name="country">
+            {{ data.respondent }}
+          </h4>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <br />
+  <br />
+  <br />
+  <div class="pagination-bar">
+    <ul *ngIf="page != 1">
+      <button id="pagination_pre" (click)="sendPreviousPage()">Previous</button>
+    </ul>
+    <ul *ngIf="page != results_count / limit">
+      <button id="pagination_next" (click)="sendNextPage()">Next</button>
+    </ul>
+  </div>
+</body>

@@ -4,7 +4,6 @@ var ListSchema = new Schema({
   idx: { type: Number },
   name: { type: String },
   age: { type: Number },
-  gender: { type: String },
   country: { type: String },
 });
 

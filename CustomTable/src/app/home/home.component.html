@@ -1,4 +1,4 @@
-<body ng-init="rows">
+<!-- <body ng-init="rows">
   <div class="search-bar">
     <input
       type="text"
@@ -10,7 +10,6 @@
   <br />
   <br />
 
-  <!-- <ul class="search-repeater" ngFor="let data of rows | filter: searchText"> -->
   <ul class="search-repeater" *ngFor="let data of rows">
     <li>
       <h3 id="search-title" name="title">{{ data.idx }}</h3>
@@ -34,30 +33,4 @@
       </ul>
     </li>
   </ul>
-
-  <!-- <table id="users">
-  <tr>
-    <th *ngFor="let column of headers">
-      {{ column }}
-    </th>
-  </tr>
-
-  <tr *ngFor="let row of rows">
-    <td>
-      <a href="#">{{ row.idx }}</a>
-    </td>
-    <td>
-      <a href="#">{{ row.name }}</a>
-    </td>
-    <td>
-      <a href="#">{{ row.age }}</a>
-    </td>
-    <td>
-      <a href="#">{{ row.gender }}</a>
-    </td>
-    <td>
-      <a href="#">{{ row.country }}</a>
-    </td>
-  </tr>
-</table> -->
-</body>
+</body> -->
